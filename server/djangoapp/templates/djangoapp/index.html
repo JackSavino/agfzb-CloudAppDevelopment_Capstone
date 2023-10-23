@@ -21,15 +21,36 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <!-- About Us Menu Item -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'about' %}">About Us</a>
                 </li>
+                <!-- Contact Us Menu Item -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                </li>
+                <!-- User Authentication Menu Items -->
+                <li class="nav-item">
+                    <form class="form-inline">
+                        <input type="text" class="form-control" placeholder="Username">
+                        <input type="password" class="form-control" placeholder="Password">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
                 </li>
                 <!-- Add more menu items as needed -->
             </ul>
         </div>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+            <span class="nav-link">Welcome, {{ user.first_name|default:user.username }}</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'signout' %}">Sign Out</a>
+        </li>
+        {% endif %}
     </nav>
     <!--Add a dealer table here -->
 

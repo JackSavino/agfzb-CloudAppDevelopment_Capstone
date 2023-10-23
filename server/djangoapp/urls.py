@@ -8,7 +8,7 @@ urlpatterns = [
     # route is a string contains a URL pattern
     # view refers to the view function
     # name the URL
-    path('my-view/', views.my_view, name='my-view'),
+    path('static-view/', views.static_view, name='static-view'),
 
     # path for about view
     path('about/', views.about, name='about'),
@@ -19,6 +19,7 @@ urlpatterns = [
     # path for registration
 
     # path for login
+    path('login/', views.login_request, name='login'),
 
     # path for logout
 
