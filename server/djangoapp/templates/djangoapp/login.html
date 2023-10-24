@@ -11,7 +11,7 @@
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Reviews</a>
+                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
             </div>
             <!-- About Us Menu Item -->
             <div class="nav-item">
@@ -23,20 +23,10 @@
             </div>
             <!-- User Authentication Menu Items -->
             <ul class="nav navbar-nav navbar-right">
-                <form class="form-inline">
-                    <input type="text" class="form-control" placeholder="Username">
-                    <input type="password" class="form-control" placeholder="Password">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </form>
-            </ul>
-            <div class="nav navbar-nav navbar-right">
-                <a class="nav-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li>
                     <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-                    <a class="btn btn-link" href="{% url 'djangoapp:index' %}">Logout</a>
+                    <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
                 </li>
                 {% else %}
                 <li>

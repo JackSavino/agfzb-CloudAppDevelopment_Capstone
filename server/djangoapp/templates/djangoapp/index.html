@@ -15,43 +15,42 @@
 </head>
 
     <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <!-- About Us Menu Item -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
+            </div>
+            <!-- About Us Menu Item -->
+            <div class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
+            </div>
+            <!-- Contact Us Menu Item -->
+            <div class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
+            </div>
+            <!-- User Authentication Menu Items -->
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li>
+                    <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                    <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
                 </li>
-                <!-- Contact Us Menu Item -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
-                </li>
-                <!-- User Authentication Menu Items -->
-                <li class="nav-item">
-                    <form class="form-inline">
-                        <input type="text" class="form-control" placeholder="Username">
-                        <input type="password" class="form-control" placeholder="Password">
-                        <button type="submit" class="btn btn-primary">Login</button>
+                {% else %}
+                <li>
+                    <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Username" name="username" >
+                            <input type="password" class="form-control" placeholder="Password" name="psw" >
+                            <button class="btn btn-primary" type="submit">Login</button>
+                            <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                        </div>
                     </form>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
-                </li>
-                <!-- Add more menu items as needed -->
+                {% endif %}
             </ul>
         </div>
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-            <span class="nav-link">Welcome, {{ user.first_name|default:user.username }}</span>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'djangoapp:index' %}">Sign Out</a>
-        </li>
-        {% endif %}
     </nav>
     <!--Add a dealer table here -->
 
