@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
+from .models import CarMake, CarModel
 # from .restapis import related methods
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -76,14 +76,14 @@ def get_dealerships(request):
 
 
 # Dealer details view to render the reviews of a dealer
-def get_dealer_details(request, dealer_id):
+def get_reviews(request, dealer_id):
     if request.method == "GET":
         context = {}
         dealer_url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/dealership"
         dealer = get_dealer_from_cf_by_id(dealer_url, id=dealer_id)
         context["dealer"] = dealer
     
-        review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/get_reviews"
+        review_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_reviews"
         reviews = get_dealer_reviews_from_cf(review_url, id=dealer_id)
         print(reviews)
         context["reviews"] = reviews

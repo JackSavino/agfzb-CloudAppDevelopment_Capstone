@@ -7,24 +7,27 @@ class CarMake(models.Model):
     description = models.CharField(max_length=500)
 
     def __str__(self):
-        return "Name: " + self.name + "," + \
-               "Description: " + self.description
+        return "Name: " + self.name
 
 # Car Model model
 class CarModel(models.Model):
     make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
-    name = models.CharField(null=False, max_length=100, default='Car')
+    name = models.CharField(null=False, max_length=100, default='Model')
     id = models.IntegerField(default=1,primary_key=True)
     
+    COUPE = 'Coupe'
+    MINIVAN = 'Minivan'
     SEDAN = 'Sedan'
     SUV = 'SUV'
+    TRUCK = 'Truck'
     WAGON = 'Wagon'
-    COUPE = 'Coupe'
     CAR_TYPES = [
+        (COUPE, 'Coupe'),
+        (MINIVAN, 'Minivan'),
         (SEDAN, 'Sedan'),
         (SUV, 'SUV'),
+        (TRUCK, 'Truck'),
         (WAGON, 'Wagon'),
-        (COUPE, 'Coupe')
     ]
 
     type = models.CharField(
@@ -34,15 +37,10 @@ class CarModel(models.Model):
         default=SEDAN
     )
         
-    year = models.DateField(default=now)
+    year = models.IntegerField(default=now().year)
 
     def __str__(self):
-        return "Make: " + self.make + "," + \
-               "Name: " + self.name + "," + \
-               "Year: " + self.year + "," + \
-               "Type: " + self.type + "," + \
-               "Dealer ID: " + self.id
-
+        return "Name: " + self.name
 
 # Get dealer data
 class CarDealer:
@@ -66,12 +64,12 @@ class CarDealer:
         self.zip = zip
 
     def __str__(self):
-        return "Dealer name: " + self.full_name
+        return "Dealer Name: " + self.full_name
 
 # Get review data
 class DealerReview:
 
-    def __init__(self, dealership, name, purchase, review):
+    def __init__(self, dealership, name, purchase, review, id):
         # Required attributes
         self.dealership = dealership
         self.name = name
