@@ -2,13 +2,17 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import CarMake, CarModel
-# from .restapis import related methods
+from .models import CarDealer, CarMake, CarModel, DealerReview
+from .restapis import get_request, get_dealers_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+
+# Static view
+def static_view(request):
+    return render(request, 'djangoapp/static.html')
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -70,13 +74,18 @@ def registration_request(request):
 
 # Dealerships view to render the index page with a list of dealerships
 def get_dealerships(request):
-    context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/index.html', context)
+        url = "your-cloud-function-domain/dealerships/dealer-get"
+        # Get dealers from the URL
+        dealerships = get_dealers_from_cf(url)
+        # Concat all dealer's short name
+        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
+        # Return a list of dealer short name
+        return HttpResponse(dealer_names)
 
 
 # Dealer details view to render the reviews of a dealer
-def get_reviews(request, dealer_id):
+def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         context = {}
         dealer_url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/dealership"
@@ -88,9 +97,9 @@ def get_reviews(request, dealer_id):
         print(reviews)
         context["reviews"] = reviews
         
-        return render(request, 'djangoapp/dealer_details.html', context)
+        return render(request, 'djangoapp/get_reviews.html', context)
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
-
+# def add_review(request, dealer_id):

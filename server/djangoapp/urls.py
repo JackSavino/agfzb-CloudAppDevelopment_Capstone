@@ -5,6 +5,9 @@ from . import views
 
 app_name = 'djangoapp'
 urlpatterns = [
+    # path for static view
+    path('static-view/', views.static_view, name='static-view'),
+
     # path for about view
     path('about/', views.about, name='about'),
 
@@ -24,8 +27,9 @@ urlpatterns = [
     path(route='dealership-package/get_dealerships', view=views.get_dealerships, name='index'),
 
     # path for dealer reviews view
-    path(route='dealership-package/get_reviews', view=views.get_reviews, name='reviews')
+    path(route='dealership-package/get_reviews', view=views.get_dealer_details, name='get-reviews'),
 
     # path for add a review view
+    # path(route='dealership-package/post_review', view=views.post_review, name='post-review'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

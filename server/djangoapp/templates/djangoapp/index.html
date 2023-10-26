@@ -53,7 +53,18 @@
         </div>
     </nav>
     <!--Add a dealer table here -->
-
+    <tbody>
+        {% for dealer in dealership_list %}
+            <tr>
+                
+                <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.id}}</a></td>
+                <td>{{dealer.city}}</td>
+                <td>{{dealer.address}}</td>
+                <td>{{dealer.zip}}</td>
+                <td>{{dealer.st}}</td>
+            </tr>
+        {% endfor %}
+     </tbody>
     </body>
 
 </html>
