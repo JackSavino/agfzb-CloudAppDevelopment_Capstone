@@ -85,7 +85,7 @@ def get_dealer_reviews_from_cf(url, dealerId):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
-def analyze_review_sentiments(DealerReviews): 
+def analyze_review_sentiments(DealerReview): 
     url = 'https://eeec9e58-1363-4b4f-82e5-d2769bdc1c22-bluemix.cloudantnosqldb.appdomain.cloud'
     api_key = 'kUTG-246dbpzq12Wk1_LimF_WmD4cj2_jRs_ms1UQcqs'
 
