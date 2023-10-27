@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        {% load static %}
-        <meta charset="UTF-8">
-        <title>Contact Us</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}">
-        <title>Contact Us</title>
-    </head>
-    <body>
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}">
+</head>
+<body>
     <!-- Navigation bar -->
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
@@ -27,6 +26,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li>
+                    <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer.id%}">Add Review</a>
                     <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
                     <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
                 </li>
@@ -52,5 +52,5 @@
         <p>123 Broadway Ave<br>Denver, CO 80218</p>
         <h2>Phone Number</h2>
         <p>123-456-7890</p>
-    </body>
+</body>
 </html>

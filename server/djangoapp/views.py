@@ -75,31 +75,41 @@ def registration_request(request):
 # Dealerships view to render the index page with a list of dealerships
 def get_dealerships(request):
     if request.method == "GET":
-        url = "djangoapp/dealership-package/get_dealerships"
-        # Get dealers from the URL
+        context = {}
+        url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_dealerships"
         dealerships = get_dealers_from_cf(url)
-        # Concat all dealer's short name
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
-        # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        context["dealership_list"] = dealerships
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Dealer details view to render the reviews of a dealer
-def get_dealer_details(request, dealer_id):
+def get_dealer_details(request):
     if request.method == "GET":
         context = {}
-        dealer_url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/dealership"
-        dealer = get_dealer_from_cf_by_id(dealer_url, id=dealer_id)
+        dealer_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_dealerships"
+        dealer = get_dealers_from_cf(dealer_url, id=id)
         context["dealer"] = dealer
-    
+                      
         review_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_reviews"
-        reviews = get_dealer_reviews_from_cf(review_url, id=dealer_id)
+        reviews = get_dealer_reviews_from_cf(review_url, id=id)
         print(reviews)
         context["reviews"] = reviews
         
-        return render(request, 'djangoapp/get_reviews.html', context)
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
 # def add_review(request, dealer_id):
+#     if request.method == "POST":
+#         context = {}
+#         dealer_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_dealerships"
+#         dealer = get_dealer_from_cf_by_id(dealer_url, id=dealer_id)
+#         context["dealer"] = dealer
+#     
+#         review_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_reviews"
+#         reviews = get_dealer_reviews_from_cf(review_url, id=dealer_id)
+#         print(reviews)
+#         context["reviews"] = reviews
+#         
+#         return render(request, 'djangoapp/add_review.html', context)

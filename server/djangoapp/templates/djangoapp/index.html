@@ -11,10 +11,9 @@
     <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-
 </head>
 
-    <body>
+<body>
     <!-- Navigation bar -->
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
@@ -33,6 +32,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li>
+                    <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer.id%}">Add Review</a>
                     <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
                     <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
                 </li>
@@ -52,11 +52,11 @@
             </ul>
         </div>
     </nav>
-    <!--Add a dealer table here -->
+
+    <!-- Dealer Table -->
     <tbody>
         {% for dealer in dealership_list %}
             <tr>
-                
                 <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.id}}</a></td>
                 <td>{{dealer.city}}</td>
                 <td>{{dealer.address}}</td>
@@ -64,7 +64,6 @@
                 <td>{{dealer.st}}</td>
             </tr>
         {% endfor %}
-     </tbody>
-    </body>
-
+    </tbody>
+</body>
 </html>
