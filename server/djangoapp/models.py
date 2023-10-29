@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
+from django.core import serializers
+import uuid
+import json
 
 # Car Make model
 class CarMake(models.Model):
@@ -11,9 +14,12 @@ class CarMake(models.Model):
 
 # Car Model model
 class CarModel(models.Model):
-    make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
-    name = models.CharField(null=False, max_length=100, default='Model')
-    id = models.IntegerField(default=1,primary_key=True)
+    make = models.ForeignKey(CarMake, null=False, on_delete=models.CASCADE)
+    # - Many-To-One relationship to Car Make model (One Car Make has many Car Models, using ForeignKey field)
+    name = models.CharField(null=False, max_length=40, default='undefined')
+    # - Name
+    id = models.IntegerField(default=1, primary_key=True)      
+    # - Dealer id, used to refer a dealer created in cloudant database
     
     COUPE = 'Coupe'
     MINIVAN = 'Minivan'
