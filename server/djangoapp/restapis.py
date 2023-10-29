@@ -22,7 +22,7 @@ def get_request(url, **kwargs):
             params["features"] = kwargs["features"]
             params["return_analyzed_text"] = kwargs["return_analyzed_text"]
             response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-                                    auth=HTTPBasicAuth('kUTG-246dbpzq12Wk1_LimF_WmD4cj2_jRs_ms1UQcqs', api_key))
+                                    auth=HTTPBasicAuth('apikey', api_key))
         else:
             # Call get method of requests library with URL and parameters
             response = requests.get(url, headers={'Content-Type': 'application/json'},
