@@ -85,11 +85,11 @@ def get_dealerships(request):
 def get_dealer_details(request, id):
     if request.method == "GET":
         context = {}
-        dealer_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_dealerships"
+        dealer_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/get_dealerships"
         dealer = get_dealer_by_id_from_cf(dealer_url, id=id)
         context["dealer"] = dealer
                       
-        review_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_reviews"
+        review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/get_reviews"
         reviews = get_dealer_reviews_from_cf(review_url, id=id)
         print(reviews)
         context["reviews"] = reviews
@@ -99,7 +99,7 @@ def get_dealer_details(request, id):
 # View to post a review
 def add_review(request, id):
     context = {}
-    dealer_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/get_dealerships"
+    dealer_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/get_dealerships"
     dealer = get_dealer_by_id_from_cf(dealer_url, id=id)
     context["dealer"] = dealer
     if request.method == 'GET':
@@ -132,6 +132,6 @@ def add_review(request, id):
 
             new_payload = {}
             new_payload["review"] = payload
-            review_post_url = "https://us-south.functions.cloud.ibm.com/api/v1/namespaces/ad39ee7e-0d06-4e9e-8de9-35be2c866619/actions/dealership-package/post_review"
+            review_post_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/post_review"
             post_request(review_post_url, new_payload, id=id)
         return redirect("djangoapp:dealer_details", id=id)
