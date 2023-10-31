@@ -75,7 +75,7 @@ class CarDealer:
 # Get review data
 class DealerReview:
 
-    def __init__(self, dealership, name, purchase, review, id):
+    def __init__(self, dealership, name, purchase, review):
         # Required attributes
         self.dealership = dealership
         self.name = name

@@ -10,7 +10,6 @@ import time
 
 
 def get_request(url, **kwargs):
-    
     # If argument contain API KEY
     api_key = kwargs.get("api_key")
     print("GET from {} ".format(url))
@@ -103,7 +102,7 @@ def get_dealer_reviews_from_cf(url, **kwargs):
     # print(json_result)
     if json_result:
         print("line 105",json_result)
-        reviews = json_result["data"]["docs"]
+        reviews = json_result["body"]["data"]["docs"]
         for dealer_review in reviews:
             review_obj = DealerReview(dealership=dealer_review["dealership"],
                                    name=dealer_review["name"],
