@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarModel, CarMake, CarDealer, DealerReview, ReviewPost
-from .restapis import get_request, get_dealers_from_cf, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_request, post_request, get_dealers_from_cf, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -104,7 +104,7 @@ def add_review(request, id):
     context["dealer"] = dealer
     if request.method == 'GET':
         # Get cars for the dealer
-        cars = CarModel.objects.filter(id=id)
+        cars = CarModel.objects.all()
         print(cars)
         context["cars"] = cars
         
@@ -128,10 +128,27 @@ def add_review(request, id):
             payload["purchase_date"] = request.POST["purchasedate"]
             payload["car_make"] = car.make.name
             payload["car_model"] = car.name
-            payload["car_year"] = int(car.year.strftime("%Y"))
+            payload["car_year"] = int(car.year)
 
             new_payload = {}
             new_payload["review"] = payload
-            review_post_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/post_review"
-            post_request(review_post_url, new_payload, id=id)
+            review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/post_review"
+
+            review = {
+                "id": id,
+                "time": datetime.utcnow().isoformat(),
+                "name": request.user.username,
+                "dealership": id,                
+                "review": request.POST["content"],  # Extract the review from the POST request
+                "purchase": True,  # Extract purchase info from POST
+                "purchase_date":request.POST["purchasedate"],  # Extract purchase date from POST
+                "car_make": car.make.name,  # Extract car make from POST
+                "car_model": car.name,  # Extract car model from POST
+                "car_year": int(car.year),  # Extract car year from POST
+            }
+            review=json.dumps(review,default=str)
+            new_payload1 = {}
+            new_payload1["review"] = review
+            print("\nREVIEW:",review)
+            post_request(review_url, review, id=id)
         return redirect("djangoapp:dealer_details", id=id)
