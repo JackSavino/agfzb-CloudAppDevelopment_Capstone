@@ -12,13 +12,13 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 </head>
-
 <body>
     <!-- Navigation bar -->
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
+            <!-- Home Menu Item -->
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
+                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Home</a>
             </div>
             <!-- About Us Menu Item -->
             <div class="nav-item">
@@ -32,7 +32,6 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li>
-                    <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer.id%}">Add Review</a>
                     <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
                     <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
                 </li>
@@ -93,8 +92,7 @@
               </div>
         </footer>
     </div>    
-
-    </body>
+</body>
 
 <script>
     $(function() {
