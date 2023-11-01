@@ -51,7 +51,10 @@ class CarModel(models.Model):
 # Get dealer data
 class CarDealer:
 
-    def __init__(self, address, city, id, lat, long, st, zip):
+    def __init__(self, address, city, id, lat, long, st, zip, full_name):
+        # Dealer name
+        self.full_name = full_name
+        
         # Dealer address
         self.address = address
         # Dealer city
