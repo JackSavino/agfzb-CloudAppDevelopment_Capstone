@@ -10,10 +10,6 @@ from datetime import datetime
 import logging
 import json
 
-# Static view
-def static_view(request):
-    return render(request, 'djangoapp/static.html')
-
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -103,6 +99,44 @@ def add_review(request, id):
     dealer = get_dealer_by_id_from_cf(dealer_url, id=id)
     context["dealer"] = dealer
     if request.method == 'GET':
+        cars = CarModel.objects.all()
+        context["cars"] = cars
+        return render(request, 'djangoapp/add_review.html', context)
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            user = request.user
+            first_name = user.first_name
+            last_name = user.last_name
+            full_name = f"{first_name} {last_name}"
+            print(request.POST)
+            payload = dict()
+            car_id = request.POST["car"]
+            car = CarModel.objects.get(pk=car_id)
+            payload["time"] = datetime.utcnow().isoformat()
+            payload["name"] = full_name
+            payload["dealership"] = id
+            payload["id"] = id
+            payload["review"] = request.POST["content"]
+            payload["purchase"] = False
+            if "purchasecheck" in request.POST:
+                if request.POST["purchasecheck"] == 'on':
+                    payload["purchase"] = True
+            payload["purchase_date"] = request.POST["purchasedate"]
+            payload["car_make"] = car.make.name
+            payload["car_model"] = car.name
+            payload["car_year"] = int(car.year)
+            new_payload = {}
+            new_payload["review"] = payload
+            review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/post_review"
+            post_request(review_url, new_payload, id=id)
+        return redirect("djangoapp:dealer_details", id=id)
+
+# def add_review(request, id):
+    context = {}
+    dealer_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/get_dealerships"
+    dealer = get_dealer_by_id_from_cf(dealer_url, id=id)
+    context["dealer"] = dealer
+    if request.method == 'GET':
         # Get cars for the dealer
         cars = CarModel.objects.all()
         print(cars)
@@ -147,8 +181,8 @@ def add_review(request, id):
                 "car_year": int(car.year),  # Extract car year from POST
             }
             review=json.dumps(review,default=str)
-            new_payload1 = {}
-            new_payload1["review"] = review
+            new_payload = {}
+            new_payload["review"] = review
             print("\nREVIEW:",review)
-            post_request(review_url, review, id=id)
+            post_request(review_url, new_payload, id=id)
         return redirect("djangoapp:dealer_details", id=id)
