@@ -52,12 +52,13 @@
         </div>
     </nav>
     <div class="container-fluid">
+    </br>
         <h3>Add a review for <b>{{dealer.full_name}}</b></h3>
         <form action="{% url 'djangoapp:add_review' dealer.id%}" method="post">
             <div class="form-group">
     
                   <div class="mb-3">
-                      <label for="content"><b>Write your review below: </b></label>
+                      <label for="content"><i>Use the space below to write your review.</i></label>
                       <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
                   </div>
     
@@ -67,9 +68,9 @@
                           Check this box if you purchased a car from {{dealer.full_name}}
                       </label>
                   </div>
-    
+                </br>
                   <div class="mb-3" id="car-select" style="display: none;">
-                    <label for="car"><b>Please select your car: </b></label>
+                    <label for="car"><b>Select Vehicle: </b></label>
                     <select name="car" id="car" class="form-select">
                         <option value="" selected>(Model-Make-Year)</option> <!-- Empty option -->
                         {% for car in cars %}
@@ -79,8 +80,8 @@
                 </div>
     
                   <div class="mb-3" id="date-select" style="display: none;">
-                      <label for="purchasedate"><b>Select Your Purchase Date: </b></label>
-                      <input class="date-own form-control" style="width: 300px;" type="text" name="purchasedate" id="purchasedate">
+                      <label for="purchasedate"><b>Purchase Date: </b></label>
+                      <input class="date-own form-control datepicker" style="width: 300px;" type="text" name="purchasedate" id="purchasedate">
                   </div>
             </div>
             {% csrf_token %}
@@ -101,19 +102,20 @@
                 $('#car-select').show();
                 $('#date-select').show();
                 $('#car').prop('required', true); // Make the select required
-                $('#purchasedate').prop('required', true); // Make the select required
+                $('#purchasedate').prop('required', true); // Make the date field required
+                $('.datepicker').datepicker({
+                    format: 'mm/dd/yyyy',
+                    autoclose: true  // Close the datepicker when a date is selected
+                });
             } else {
                 $('#car-select').hide();
                 $('#date-select').hide();
-                $('#car').prop('required', false); // Remove the required attribute
-                $('#purchasedate').prop('required', false); // Make the select required
+                $('#car').prop('required', false); // Remove the required attribute from the select
+                $('#purchasedate').prop('required', false); // Remove the required attribute from the date field
+                $('.datepicker').datepicker('remove');  // Remove the datepicker when it's not needed
             }
         });
-        
-        $('.date-own').datepicker({
-            format: 'mm/dd/yyyy'
-        });
     });
-</script>
+</script>    
 </body>
 </html>
