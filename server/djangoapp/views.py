@@ -112,21 +112,25 @@ def add_review(request, id):
             payload = dict()
             car_id = request.POST["car"]
             car = CarModel.objects.get(pk=car_id)
+
             payload["time"] = datetime.utcnow().isoformat()
             payload["name"] = full_name
             payload["dealership"] = id
             payload["id"] = id
             payload["review"] = request.POST["content"]
-            payload["purchase"] = False
-            if "purchasecheck" in request.POST:
-                if request.POST["purchasecheck"] == 'on':
-                    payload["purchase"] = True
-            payload["purchase_date"] = request.POST["purchasedate"]
-            payload["car_make"] = car.make.name
-            payload["car_model"] = car.name
-            payload["car_year"] = int(car.year)
-            new_payload = {}
-            new_payload["review"] = payload
+            
+            # Check if "purchasecheck" is checked
+            if "purchasecheck" in request.POST and request.POST["purchasecheck"] == 'on':
+                payload["purchase"] = True
+                payload["purchase_date"] = request.POST["purchasedate"]
+                payload["car_make"] = car.make.name
+                payload["car_model"] = car.name
+                payload["car_year"] = int(car.year)
+            else:
+                payload["purchase"] = False
+            
+            json_payload = {}
+            json_payload["review"] = payload
             review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/ad39ee7e-0d06-4e9e-8de9-35be2c866619/dealership-package/post_review"
-            post_request(review_url, new_payload, id=id)
+            post_request(review_url, json_payload, id=id)
         return redirect("djangoapp:dealer_details", id=id)
